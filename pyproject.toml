@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "credit-risk-pipeline"
+version = "0.1.0"
+description = ""
+authors = ["tam.do <tam.do@onemount.com>"]
+readme = "README.md"
+packages = [
+    { include = "src", from = "." },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+torch = "^2.1.2"
+torchvision = "^0.16.2"
+openmim = "^0.3.9"
+scikit-learn = "^1.4.0"
+pandas = "^2.2.0"
+numpy = "^1.26.3"
+imbalanced-learn = "^0.12.0"
+
+[tool.poetry.group.dev.dependencies]
+python = "^3.9"
+torch = "^2.1.2"
+torchvision = "^0.16.2"
+openmim = "^0.3.9"
+
+
+[tool.poetry.group.scikit-learn.dependencies]
+pandas = "^2.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
