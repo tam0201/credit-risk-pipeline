@@ -1,32 +1,54 @@
-.PHONY: create-fraud-detection-env install-deps test clean all
+# Define the default target
+.PHONY: run-pipeline
+run-pipeline: preprocess train predict validate
 
-# Virtual environment setup
-create-fraud-detection-env:
-	@if [ ! -d "fraud-detection" ]; then \
-		echo "Creating virtual environment for fraud detection..."; \
-		python3 -m venv fraud-detection; \
-		echo "Virtual environment for fraud detection created."; \
-	else \
-		echo "Virtual environment for fraud detection already exists."; \
-	fi
+# Define variables for paths
+DATA_DIR=./data
+MODEL_DIR=./models
+SRC_DIR=./src
+CONFIG=$(SRC_DIR)/config.yaml
 
-# Dependency installation
-install-deps: create-fraud-detection-env
-	@echo "Installing dependencies..."
-	@. fraud-detection/bin/activate; pip install -r requirements.txt; mim install mmengine
-	@echo "Dependencies installed."
+# Define variables for data files
+RAW_DATA=$(DATA_DIR)/default_of_credit_card_clients.csv
+PROCESSED_DATA=$(DATA_DIR)/processed_data
+PREDICT_DATA=$(DATA_DIR)/predict_data.csv
+MODEL_PATH=$(MODEL_DIR)/output_model.pkl
 
-# Run tests
-test: install-deps
-	@echo "Running tests..."
-	@. fraud-detection/bin/activate; pytest
-	@echo "Tests completed."
+# Define the command to run Python scripts
+POETRY_RUN=poetry run python
 
-# Clean the environment
+# Targets for pipeline stages
+.PHONY: preprocess train predict validate clean
+
+preprocess:
+	@echo "Preprocessing data..."
+	$(POETRY_RUN) $(SRC_DIR)/pipeline.py --config-path $(CONFIG) --stage preprocess
+
+train:
+	@echo "Training model..."
+	$(POETRY_RUN) $(SRC_DIR)/pipeline.py --config-path $(CONFIG) --stage train
+
+predict:
+	@echo "Making predictions..."
+	$(POETRY_RUN) $(SRC_DIR)/pipeline.py --config-path $(CONFIG) --stage predict
+
+validate:
+	@echo "Validating model..."
+	$(POETRY_RUN) $(SRC_DIR)/pipeline.py --config-path $(CONFIG) --stage validate
+
 clean:
 	@echo "Cleaning up..."
-	@rm -rf fraud-detection
-	@echo "Cleaned the virtual environment for fraud detection."
+	rm -f $(PROCESSED_DATA)/*.csv
+	rm -f $(MODEL_PATH)
 
-# All-in-one command
-all: create-fraud-detection-env install-deps test
+# Target to install Poetry
+.PHONY: install-poetry
+install-poetry:
+	@echo "Installing Poetry..."
+	curl -sSL https://install.python-poetry.org | python3 -
+	echo "Poetry installed. Please restart your terminal session." 
+# Target to install dependencies using Poetry
+.PHONY: install-deps
+install-deps:
+	@echo "Installing dependencies..."
+	poetry install

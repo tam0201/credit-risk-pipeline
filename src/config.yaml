@@ -6,8 +6,10 @@ data:
   predict_data_path: "data/predict_data.csv"
   target_column: "default payment next month"
 model:
-  type: "nn"  # Can be 'nn' for Neural Network or 'gbm' for Gradient Boosting Machine
-  model_path: "models/output_model.pkl"
+  name: "default_of_credit_card_clients"
+  version: "0.0.1"
+  type: "gbm"  # Can be 'nn' for Neural Network or 'gbm' for Gradient Boosting Machine
+  model_path: "models/${name}_${version}.pkl"
   predictions_path: "models/predictions.csv"
   hidden_layers: [64, 32, 16]
 
