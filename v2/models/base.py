@@ -60,3 +60,18 @@ class AbstractModel(metaclass=ABCMeta):
             path: File path to load the model from.
         """
         pass
+
+    def infer(self, result: Result, test_x: pd.Dataframe) -> np.ndarray:
+        folds = len(result.models)
+        preds_proba = np.zeros((test_x.shape[0],))
+
+        for model in tqdm(result.models.values(), total=folds):
+            preds_proba += (
+                model.predict(test_x) / folds
+                if isinstance(model, lgb.Booster)
+                else model.predict_proba(test_x)[:, 1] / folds
+            )
+
+        assert len(preds_proba) == len(test_x)
+
+        return preds_proba
