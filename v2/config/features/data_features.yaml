@@ -1,5 +1,14 @@
 path: config/features
 name: data_features.yaml
+nb_runs: 50
+dataset:
+  path: amex_data
+  train: train.csv
+  test: test.csv
+target: target
+drop_features:
+- customer_ID
+- S_2
 cat_features:
 - B_30
 - B_38

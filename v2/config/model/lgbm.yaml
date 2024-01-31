@@ -12,6 +12,14 @@ params:
   min_data_in_leaf: 40
   seed: 42
   verbose: -1
+path: res/models/
+working: working
+name: lightgb-meta
+result: lightgb-meta
 early_stopping_rounds: 100
 num_boost_round: 10500
 verbose: 100
+loss:
+  is_customized: False
+  mult_no4prec: 5.0
+  max_weights: 2.0

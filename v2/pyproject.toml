@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "v2"
+version = "0.1.0"
+description = ""
+authors = ["tam0201 <dominhtam.0201@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+lightgbm = "^4.3.0"
+numpy = "^1.26.3"
+xgboost = "^2.0.3"
+omegaconf = "^2.3.0"
+scikit-learn = "^1.4.0"
+torch = "^2.2.0"
+tensorflow = "2.15"
+loguru = "^0.7.2"
+category-encoders = "^2.6.3"
+tqdm = "^4.66.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
